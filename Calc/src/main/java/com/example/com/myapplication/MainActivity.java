@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     EditText edit1, edit2;
     Button btnAdd, btnSub, btnMul, btnDiv, btnRem;
     TextView textResult;
+    String strResult;
     String num1, num2;
     Double result;
 
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
                         if(!isValid())
                             return;
                         result = Double.parseDouble(num1) +  Double.parseDouble(num2);
-                        textResult.setText("계산 결과 : " + result.toString());
+                        strResult = String.format("%.5f", result);
+                        textResult.setText("계산 결과 : " + strResult);
                     }
                 });
                 break;
@@ -64,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
                         if(!isValid())
                             return;
                         result = Double.parseDouble(num1) - Double.parseDouble(num2);
-                        textResult.setText("계산 결과 : " + result.toString());
+                        strResult = String.format("%.5f", result);
+                        textResult.setText("계산 결과 : " + strResult);
                     }
                 });
                 break;
@@ -78,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
                         if(!isValid())
                             return;
                         result = Double.parseDouble(num1) * Double.parseDouble(num2);
-                        textResult.setText("계산 결과 : " + result.toString());
+                        strResult = String.format("%.5f", result);
+                        textResult.setText("계산 결과 : " + strResult);
                     }
                 });
                 break;
@@ -96,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         result = Double.parseDouble(num1) / Double.parseDouble(num2);
-                        textResult.setText("계산 결과 : " + result.toString());
+                        strResult = String.format("%.5f", result);
+                        textResult.setText("계산 결과 : " + strResult);
                     }
                 });
                 break;
@@ -114,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         result = Double.parseDouble(num1) % Double.parseDouble(num2);
-                        textResult.setText("계산 결과 : " + result.toString());
+                        strResult = String.format("%.5f", result);
+                        textResult.setText("계산 결과 : " + strResult);
                     }
                 });
                 break;
