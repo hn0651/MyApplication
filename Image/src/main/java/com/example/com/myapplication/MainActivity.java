@@ -1,4 +1,4 @@
-package com.example.domocha.myapplication;
+package com.example.com.myapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup rGroup1;
     RadioButton rdoJlb, rdoKtk, rdoLlp;
     Button btnExit, btnReset;
-    ImageView imgAdr;
+    ImageView imgAndroid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,57 +29,61 @@ public class MainActivity extends AppCompatActivity {
         setTitle("안드로이드 사진 보기");
 
         text1 = (TextView) findViewById(R.id.Text1);
-        switchAgree = (Switch) findViewById(R.id.SwitchAgree);
-
         text2 = (TextView) findViewById(R.id.Text2);
+        switchAgree = (Switch) findViewById(R.id.SwitchAgree);
         rGroup1 = (RadioGroup) findViewById(R.id.Rgroup1);
         rdoJlb = (RadioButton) findViewById(R.id.RdoJlb);
         rdoKtk = (RadioButton) findViewById(R.id.RdoKtk);
         rdoLlp = (RadioButton) findViewById(R.id.RdoLlp);
-
         btnExit = (Button) findViewById(R.id.BtnExit);
-        imgAdr = (ImageView) findViewById(R.id.ImgPet);
         btnReset = (Button) findViewById(R.id.BtnReset);
-
+        imgAndroid = (ImageView) findViewById(R.id.ImgAndroid);
 
         switchAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(switchAgree.isChecked() == true) {
+                if(isChecked == true) {
                     text2.setVisibility(View.VISIBLE);
                     rGroup1.setVisibility(View.VISIBLE);
                     btnExit.setVisibility(View.VISIBLE);
                     btnReset.setVisibility(View.VISIBLE);
-                    imgAdr.setVisibility(View.VISIBLE);
+                    imgAndroid.setVisibility(View.VISIBLE);
                 }
                 else {
                     text2.setVisibility(View.INVISIBLE);
                     rGroup1.setVisibility(View.INVISIBLE);
                     btnExit.setVisibility(View.INVISIBLE);
                     btnReset.setVisibility(View.INVISIBLE);
-                    imgAdr.setVisibility(View.INVISIBLE);
+                    imgAndroid.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
-        rdoJlb.setOnClickListener(new View.OnClickListener() {
+
+        rdoJlb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-//                imgAdr.setImageResource(R.drawable.jellybean);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == true) {
+                    imgAndroid.setImageResource(R.drawable.jellybean);
+                }
             }
         });
 
-        rdoKtk.setOnClickListener(new View.OnClickListener() {
+        rdoKtk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-//                imgAdr.setImageResource(R.drawable.kitkat);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == true) {
+                    imgAndroid.setImageResource(R.drawable.kitkat);
+                }
             }
         });
 
-        rdoLlp.setOnClickListener(new View.OnClickListener() {
+        rdoLlp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-//                imgAdr.setImageResource(R.drawable.lollipop);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == true) {
+                    imgAndroid.setImageResource(R.drawable.lollipop);
+                }
             }
         });
 
@@ -91,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                rGroup1.clearCheck();
                 switchAgree.setChecked(false);
             }
         });
-
     }
 
     @Override
