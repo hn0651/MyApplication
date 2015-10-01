@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 rGroup1.clearCheck();
                 switchAgree.setChecked(false);
+                imgAndroid.setImageResource(0);
             }
         });
     }
