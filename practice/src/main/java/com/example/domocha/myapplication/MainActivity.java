@@ -4,77 +4,97 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    EditText edit1, edit2;
-    Button btnAdd, btnSub, btnMul, btnDiv;
-    TextView textResult;
-    String num1, num2;
-    Integer result;
+    TextView text1, text2;
+    Switch switchAgree;
+    RadioGroup rGroup1;
+    RadioButton rdoJlb, rdoKtk, rdoLlp;
+    Button btnExit, btnReset;
+    ImageView imgAdr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("초간단 계산기");
+        setTitle("안드로이드 사진 보기");
 
-        edit1 = (EditText) findViewById(R.id.Edit1);
-        edit2 = (EditText) findViewById(R.id.Edit2);
+        text1 = (TextView) findViewById(R.id.Text1);
+        switchAgree = (Switch) findViewById(R.id.SwitchAgree);
 
-        btnAdd = (Button) findViewById(R.id.BtnAdd);
-        textResult = (TextView) findViewById(R.id.TextResult);
-        btnAdd.setOnTouchListener(new View.OnTouchListener() {
+        text2 = (TextView) findViewById(R.id.Text2);
+        rGroup1 = (RadioGroup) findViewById(R.id.Rgroup1);
+        rdoJlb = (RadioButton) findViewById(R.id.RdoJlb);
+        rdoKtk = (RadioButton) findViewById(R.id.RdoKtk);
+        rdoLlp = (RadioButton) findViewById(R.id.RdoLlp);
+
+        btnExit = (Button) findViewById(R.id.BtnExit);
+        imgAdr = (ImageView) findViewById(R.id.ImgPet);
+        btnReset = (Button) findViewById(R.id.BtnReset);
+
+
+        switchAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                num1 = edit1.getText().toString();
-                num2 = edit2.getText().toString();
-                result = Integer.parseInt(num1) + Integer.parseInt(num2);
-                textResult.setText("계산 결과 " + result.toString());
-                return false;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(switchAgree.isChecked() == true) {
+                    text2.setVisibility(View.VISIBLE);
+                    rGroup1.setVisibility(View.VISIBLE);
+                    btnExit.setVisibility(View.VISIBLE);
+                    btnReset.setVisibility(View.VISIBLE);
+                    imgAdr.setVisibility(View.VISIBLE);
+                }
+                else {
+                    text2.setVisibility(View.INVISIBLE);
+                    rGroup1.setVisibility(View.INVISIBLE);
+                    btnExit.setVisibility(View.INVISIBLE);
+                    btnReset.setVisibility(View.INVISIBLE);
+                    imgAdr.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
-        btnSub = (Button) findViewById(R.id.BtnSub);
-        btnSub.setOnTouchListener(new View.OnTouchListener() {
+        rdoJlb.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                num1 = edit1.getText().toString();
-                num2 = edit2.getText().toString();
-                result = Integer.parseInt(num1) - Integer.parseInt(num2);
-                textResult.setText("계산 결과 " + result.toString());
-                return false;
+            public void onClick(View v) {
+                imgAdr.setImageResource(R.drawable.jellybean);
             }
         });
 
-        btnMul = (Button) findViewById(R.id.BtnMul);
-        btnMul.setOnTouchListener(new View.OnTouchListener() {
+        rdoKtk.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                num1 = edit1.getText().toString();
-                num2 = edit2.getText().toString();
-                result = Integer.parseInt(num1) * Integer.parseInt(num2);
-                textResult.setText("계산 결과 " + result.toString());
-                return false;
+            public void onClick(View v) {
+                imgAdr.setImageResource(R.drawable.kitkat);
             }
         });
 
-        btnDiv = (Button) findViewById(R.id.BtnDiv);
-        btnDiv.setOnTouchListener(new View.OnTouchListener() {
+        rdoLlp.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                num1 = edit1.getText().toString();
-                num2 = edit2.getText().toString();
-                result = Integer.parseInt(num1) / Integer.parseInt(num2);
-                textResult.setText("계산 결과 " + result.toString());
-                return false;
+            public void onClick(View v) {
+                imgAdr.setImageResource(R.drawable.lollipop);
             }
         });
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                switchAgree.setChecked(false);
+            }
+        });
+
     }
 
     @Override

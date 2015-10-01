@@ -6,55 +6,77 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/Edit1"
+    <TextView
+        android:id="@+id/Text1"
+        android:text="선택을 시작하겠습니까?"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="숫자1" />
+        android:layout_margin="5dp" />
 
-    <EditText
-        android:id="@+id/Edit2"
+    <Switch
+        android:id="@+id/SwitchAgree"
+        android:text="시작함"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:hint="숫자2" />
-
-    <Button
-        android:id="@+id/BtnAdd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="더하기" />
-
-    <Button
-        android:id="@+id/BtnSub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="빼기" />
-
-    <Button
-        android:id="@+id/BtnMul"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="곱하기" />
-
-    <Button
-        android:id="@+id/BtnDiv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="나누기" />
+        android:layout_margin="5dp" />
 
     <TextView
-        android:id="@+id/TextResult"
+        android:id="@+id/Text2"
+        android:text="좋아하는 안드로이드 버전은?"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textColor="#FF0000"
-        android:layout_margin="10dp"
-        android:text="계산 결과 : "/>
+        android:layout_margin="5dp"
+        android:visibility="invisible" />
+
+    <RadioGroup
+        android:id="@+id/Rgroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:visibility="invisible">
+        <RadioButton
+            android:id="@+id/RdoJlb"
+            android:text="젤리빈(4.3)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
+        <RadioButton
+            android:id="@+id/RdoKtk"
+            android:text="킷켓(4.4)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
+        <RadioButton
+            android:id="@+id/RdoLlp"
+            android:text="롤리팝(5.0)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"/>
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/ImgPet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/BtnExit"
+        android:text="종료"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/BtnReset"
+        android:text="처음으로"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_margin="5dp"/>
+
+
 
 </LinearLayout>
