@@ -59,33 +59,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        rdoJlb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        rGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked == true) {
-                    imgAndroid.setImageResource(R.drawable.jellybean);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.RdoJlb:
+                        imgAndroid.setImageResource(R.drawable.jellybean);
+                        break;
+                    case R.id.RdoKtk:
+                        imgAndroid.setImageResource(R.drawable.kitkat);
+                        break;
+                    case R.id.RdoLlp:
+                        imgAndroid.setImageResource(R.drawable.lollipop);
+                        break;
+                    default:
+                        break;
                 }
             }
         });
 
-        rdoKtk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked == true) {
-                    imgAndroid.setImageResource(R.drawable.kitkat);
-                }
-            }
-        });
 
-        rdoLlp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked == true) {
-                    imgAndroid.setImageResource(R.drawable.lollipop);
-                }
-            }
-        });
+//        rdoJlb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked == true) {
+//                    imgAndroid.setImageResource(R.drawable.jellybean);
+//                }
+//            }
+//        });
+//
+//        rdoKtk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked == true) {
+//                    imgAndroid.setImageResource(R.drawable.kitkat);
+//                }
+//            }
+//        });
+//
+//        rdoLlp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked == true) {
+//                    imgAndroid.setImageResource(R.drawable.lollipop);
+//                }
+//            }
+//        });
 
         btnExit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
