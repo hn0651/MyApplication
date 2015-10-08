@@ -12,11 +12,14 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText edit1, edit2;
-    Button btnAdd, btnSub, btnMul, btnDiv, btnRem;
+    Button btnAdd, btnSub, btnMul, btnDiv;
     TextView textResult;
     String strResult;
     String num1, num2;
     Double result;
+    Button[] numButtons = new Button[10];
+    Integer[] numBtnIDs = { R.id.BtnNum0, R.id.BtnNum1, R.id.BtnNum2, R.id.BtnNum3, R.id.BtnNum4, R.id.BtnNum5, R.id.BtnNum6, R.id.BtnNum7, R.id.BtnNum8, R.id.BtnNum9 };
+    int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +34,38 @@ public class MainActivity extends AppCompatActivity {
         btnSub = (Button) findViewById(R.id.BtnSub);
         btnMul = (Button) findViewById(R.id.BtnMul);
         btnDiv = (Button) findViewById(R.id.BtnDiv);
-        btnRem = (Button) findViewById(R.id.BtnRem);
         textResult = (TextView) findViewById(R.id.TextResult);
 
         btnOnclickListener(btnAdd);
         btnOnclickListener(btnSub);
         btnOnclickListener(btnMul);
         btnOnclickListener(btnDiv);
-        btnOnclickListener(btnRem);
+
+        for(i=0; i<numBtnIDs.length; i++) {
+            numButtons[i] = (Button) findViewById(numBtnIDs[i]);
+        }
+
+        for(i=0; i<numBtnIDs.length; i++) {
+            final int index;
+            index = i;
+
+            numButtons[index].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(edit1.isFocused() == true) {
+                        num1 = edit1.getText().toString() + numButtons[index].getText().toString();
+                        edit1.setText(num1);
+                    }
+                    else if(edit2.isFocused() == true) {
+                        num2 = edit2.getText().toString() + numButtons[index].getText().toString();
+                        edit2.setText(num2);
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "먼저 에디트텍스트를 선택하세요", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
 
     }
 
@@ -102,25 +129,6 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         result = Double.parseDouble(num1) / Double.parseDouble(num2);
-                        strResult = String.format("%.5f", result);
-                        textResult.setText("계산 결과 : " + strResult);
-                    }
-                });
-                break;
-
-            case R.id.BtnRem:
-                btnRem.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        num1 = edit1.getText().toString();
-                        num2 = edit2.getText().toString();
-                        if(!isValid())
-                            return;
-                        if(Double.parseDouble(num2) == 0.0) {
-                            Toast.makeText(getApplicationContext(), "0으로 나눌 수 없음", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        result = Double.parseDouble(num1) % Double.parseDouble(num2);
                         strResult = String.format("%.5f", result);
                         textResult.setText("계산 결과 : " + strResult);
                     }
