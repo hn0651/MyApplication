@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
     class CookWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
-            edtUrl1.setText(strUrl);
             super.onPageFinished(view, url);
+            edtUrl1.setText(strUrl);
         }
 
         @Override
