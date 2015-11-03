@@ -1,74 +1,85 @@
 package com.example.domocha.myapplication;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
-    EditText edtUrl1;
-    Button btnGo, btnBack;
-    WebView web;
-    String strUrl;
+    EditText tvName, tvEmail;
+    Button button1;
+    EditText dlgEdtName, dlgEditEmail;
+    TextView toastText;
+    View dialogView, toastView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("사용자 정보 입력");
 
-        setTitle("간단 웹브라우저");
+        tvName = (EditText) findViewById(R.id.tvName);
+        tvEmail = (EditText) findViewById(R.id.tvEmail);
+        button1 = (Button) findViewById(R.id.button1);
 
-        edtUrl1 = (EditText) findViewById(R.id.edtUrl1);
-        btnGo = (Button) findViewById(R.id.btnGo);
-        btnBack = (Button) findViewById(R.id.btnBack);
-        web = (WebView) findViewById(R.id.webView1);
-
-        web.setWebViewClient(new CookWebViewClient());
-
-        WebSettings webSet = web.getSettings();
-        webSet.setBuiltInZoomControls(true);
-
-
-        btnGo.setOnClickListener(new View.OnClickListener() {
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                strUrl = edtUrl1.getText().toString();
-                if(!strUrl.startsWith("http://"))
-                    strUrl = "http://" + strUrl;
-                web.loadUrl(strUrl);
-            }
-        });
+                dialogView = (View) View.inflate(MainActivity.this, R.layout.dialog1, null);
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                dlg.setTitle("사용자 정보 입력");
+                dlg.setIcon(R.drawable.ic_menu_allfriends);
+                dlg.setView(dialogView);
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                web.goBack();
+                dlgEdtName = (EditText) dialogView.findViewById(R.id.dlgEdt1);
+                dlgEditEmail = (EditText) dialogView.findViewById(R.id.dlgEdt2);
+
+                dlgEdtName.setText(tvName.getText().toString());
+                dlgEditEmail.setText(tvEmail.getText().toString());
+
+                dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        tvName.setText(dlgEdtName.getText().toString());
+                        tvEmail.setText(dlgEditEmail.getText().toString());
+                    }
+                });
+
+                AlertDialog.Builder builder = dlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast toast = new Toast(MainActivity.this);
+                        toastView = (View) View.inflate(MainActivity.this, R.layout.toast1, null);
+                        toastText = (TextView) toastView.findViewById(R.id.toastText1);
+                        toastText.setText("취소했습니다");
+                        toast.setView(toastView);
+                        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+                        int xOffset = (int) (Math.random() * display.getWidth());
+                        int yOffset = (int) (Math.random() * display.getHeight());
+                        toast.setGravity(Gravity.TOP | Gravity.LEFT, xOffset, yOffset);
+                        toast.show();
+                    }
+                });
+
+                dlg.show();
             }
         });
 
     }
 
-    class CookWebViewClient extends WebViewClient {
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            edtUrl1.setText(strUrl);
-        }
 
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return false;
-//          return super.shouldOverrideUrlLoading(view, url);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
