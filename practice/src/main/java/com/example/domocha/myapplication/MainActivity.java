@@ -2,6 +2,7 @@ package com.example.domocha.myapplication;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,71 +13,85 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
+
 
 public class MainActivity extends AppCompatActivity {
-    EditText tvName, tvEmail;
-    Button button1;
-    EditText dlgEdtName, dlgEditEmail;
-    TextView toastText;
-    View dialogView, toastView;
+    DatePicker dp;
+    EditText edtDiary;
+    Button btnWrite;
+    String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("사용자 정보 입력");
+        setTitle("간단 일기장");
 
-        tvName = (EditText) findViewById(R.id.tvName);
-        tvEmail = (EditText) findViewById(R.id.tvEmail);
-        button1 = (Button) findViewById(R.id.button1);
+        dp = (DatePicker) findViewById(R.id.datePicker1);
+        edtDiary = (EditText) findViewById(R.id.edtDiary);
+        btnWrite = (Button) findViewById(R.id.btnWrite);
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        Calendar cal = Calendar.getInstance();
+        int cYear = cal.get(Calendar.YEAR);
+        int cMonth = cal.get(Calendar.MONTH);
+        int cDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        dp.init(cYear, cMonth, cDay, new DatePicker.OnDateChangedListener() {
             @Override
-            public void onClick(View v) {
-                dialogView = (View) View.inflate(MainActivity.this, R.layout.dialog1, null);
-                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
-                dlg.setTitle("사용자 정보 입력");
-                dlg.setIcon(R.drawable.ic_menu_allfriends);
-                dlg.setView(dialogView);
-
-                dlgEdtName = (EditText) dialogView.findViewById(R.id.dlgEdt1);
-                dlgEditEmail = (EditText) dialogView.findViewById(R.id.dlgEdt2);
-
-                dlgEdtName.setText(tvName.getText().toString());
-                dlgEditEmail.setText(tvEmail.getText().toString());
-
-                dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        tvName.setText(dlgEdtName.getText().toString());
-                        tvEmail.setText(dlgEditEmail.getText().toString());
-                    }
-                });
-
-                AlertDialog.Builder builder = dlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast toast = new Toast(MainActivity.this);
-                        toastView = (View) View.inflate(MainActivity.this, R.layout.toast1, null);
-                        toastText = (TextView) toastView.findViewById(R.id.toastText1);
-                        toastText.setText("취소했습니다");
-                        toast.setView(toastView);
-                        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-                        int xOffset = (int) (Math.random() * display.getWidth());
-                        int yOffset = (int) (Math.random() * display.getHeight());
-                        toast.setGravity(Gravity.TOP | Gravity.LEFT, xOffset, yOffset);
-                        toast.show();
-                    }
-                });
-
-                dlg.show();
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                fileName = Integer.toString(year) + "_" + Integer.toString(monthOfYear + 1) + "_" + Integer.toString(dayOfMonth) + ".txt";
+                String str = readDiary(fileName);
+                edtDiary.setText(str);
+                btnWrite.setEnabled(true);
             }
         });
 
+        btnWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    FileOutputStream outFs = openFileOutput(fileName, Context.MODE_PRIVATE);
+                    String str = edtDiary.getText().toString();
+                    outFs.write(str.getBytes());
+                    outFs.close();
+                    Toast.makeText(getApplicationContext(), fileName + " 이 저장됨", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+
+                }
+            }
+        });
+
+        String today = Integer.toString(cYear) + "_" + Integer.toString(cMonth + 1) + "_" + Integer.toString(cDay) + ".txt";
+        edtDiary.setText(readDiary(today));
+        btnWrite.setEnabled(true);
+    }
+
+    private String readDiary(String fName) {
+        String diaryStr = null;
+        FileInputStream inFs;
+
+        try {
+            inFs = openFileInput(fName);
+            byte[] txt = new byte[500];
+            inFs.read(txt);
+            inFs.close();
+            diaryStr = (new String(txt)).trim();
+            btnWrite.setText("수정하기");
+        } catch (IOException e) {
+            edtDiary.setHint("일기 없음");
+            btnWrite.setText("새로 저장");
+        }
+
+        return diaryStr;
     }
 
 
