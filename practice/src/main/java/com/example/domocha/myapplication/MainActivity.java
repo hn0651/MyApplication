@@ -2,6 +2,7 @@ package com.example.domocha.myapplication;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
@@ -19,76 +22,54 @@ import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
-    DatePicker dp;
-    EditText edtDiary;
-    Button btnWrite;
-    String fileName;
+    EditText edtNum1, edtNum2;
+    RadioGroup rdoGrp;
+    RadioButton rdoAdd, rdoSub, rdoMul, rdoDiv;
+    Button btnNewActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("간단 일기장");
+        setTitle("메인 액티비티");
 
-        dp = (DatePicker) findViewById(R.id.datePicker1);
-        edtDiary = (EditText) findViewById(R.id.edtDiary);
-        btnWrite = (Button) findViewById(R.id.btnWrite);
+        edtNum1 = (EditText) findViewById(R.id.edtNum1);
+        edtNum2 = (EditText) findViewById(R.id.edtNum2);
+        rdoGrp = (RadioGroup) findViewById(R.id.rdoGrp);
+        rdoAdd = (RadioButton) findViewById(R.id.rdoAdd);
+        rdoSub = (RadioButton) findViewById(R.id.rdoSub);
+        rdoMul = (RadioButton) findViewById(R.id.rdoMul);
+        rdoDiv = (RadioButton) findViewById(R.id.rdoDiv);
+        btnNewActivity = (Button) findViewById(R.id.btnNewActivity);
 
-        Calendar cal = Calendar.getInstance();
-        int cYear = cal.get(Calendar.YEAR);
-        int cMonth = cal.get(Calendar.MONTH);
-        int cDay = cal.get(Calendar.DAY_OF_MONTH);
 
-        dp.init(cYear, cMonth, cDay, new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                fileName = Integer.toString(year) + "_" + Integer.toString(monthOfYear + 1) + "_" + Integer.toString(dayOfMonth) + ".txt";
-                String str = readDiary(fileName);
-                edtDiary.setText(str);
-                btnWrite.setEnabled(true);
-            }
-        });
-
-        btnWrite.setOnClickListener(new View.OnClickListener() {
+        btnNewActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    FileOutputStream outFs = openFileOutput(fileName, Context.MODE_PRIVATE);
-                    String str = edtDiary.getText().toString();
-                    outFs.write(str.getBytes());
-                    outFs.close();
-                    Toast.makeText(getApplicationContext(), fileName + " 이 저장됨", Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-
+                if(edtNum2.getText().toString().equals("0")) {
+                    Toast.makeText(getApplicationContext(), "0으로 나눌 수 없습니다", Toast.LENGTH_LONG).show();
+                    edtNum2.setText("");
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                    intent.putExtra("Num1", Integer.parseInt(edtNum1.getText().toString()));
+                    intent.putExtra("Num2", Integer.parseInt(edtNum2.getText().toString()));
+                    intent.putExtra("Operation", rdoGrp.getCheckedRadioButtonId());
+                    startActivityForResult(intent, 0);
                 }
             }
         });
 
-        String today = Integer.toString(cYear) + "_" + Integer.toString(cMonth + 1) + "_" + Integer.toString(cDay) + ".txt";
-        edtDiary.setText(readDiary(today));
-        btnWrite.setEnabled(true);
     }
 
-    private String readDiary(String fName) {
-        String diaryStr = null;
-        FileInputStream inFs;
-
-        try {
-            inFs = openFileInput(fName);
-            byte[] txt = new byte[500];
-            inFs.read(txt);
-            inFs.close();
-            diaryStr = (new String(txt)).trim();
-            btnWrite.setText("수정하기");
-        } catch (IOException e) {
-            edtDiary.setHint("일기 없음");
-            btnWrite.setText("새로 저장");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            int result = data.getIntExtra("Value", 0);
+            Toast.makeText(getApplicationContext(), "계산 결과 : " + result, Toast.LENGTH_LONG).show();
         }
-
-        return diaryStr;
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

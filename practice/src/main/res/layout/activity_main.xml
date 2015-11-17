@@ -6,31 +6,53 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <EditText
+        android:id="@+id/edtNum1"
+        android:hint="Num 1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content" />
 
-        <DatePicker
-            android:id="@+id/datePicker1"
-            android:datePickerMode="spinner"
-            android:calendarViewShown="false"
+    <EditText
+        android:id="@+id/edtNum2"
+        android:hint="Num 2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RadioGroup
+        android:id="@+id/rdoGrp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rdoAdd"
+            android:text="더하기"
+            android:checked="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </DatePicker>
+            android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/edtDiary"
-            android:background="#00FF00"
-            android:lines="8"
+        <RadioButton
+            android:id="@+id/rdoSub"
+            android:text="빼기"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/btnWrite"
+        <RadioButton
+            android:id="@+id/rdoMul"
+            android:text="곱하기"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </LinearLayout>
 
+        <RadioButton
+            android:id="@+id/rdoDiv"
+            android:text="나누기"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnNewActivity"
+        android:text="계산하기"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
