@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyApplication</string>
+    <string name="RdbAdd">더하기</string>
+    <string name="RdbSub">빼기</string>
+    <string name="RdbMul">곱하기</string>
+    <string name="RdbDiv">나누기</string>
+    <string name="BtnNewActivity">계산하기</string>
+    <string name="BtnReturn">돌아가기</string>
 </resources>
