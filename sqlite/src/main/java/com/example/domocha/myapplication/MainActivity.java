@@ -2,6 +2,7 @@ package com.example.domocha.myapplication;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     myDBHelper myHelper;
     EditText edtName, edtNumber, edtNameResult, edtNumberResult;
     Button btnInit, btnInsert, btnSelect, btnUpdate, btnDelete;
-    SQLiteDatabase sqlDB;
+    SQLiteDatabase sqlDB = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +39,32 @@ public class MainActivity extends AppCompatActivity {
         btnInit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqlDB = myHelper.getWritableDatabase();
+                try {
+                    sqlDB = myHelper.getWritableDatabase();
+                } catch (SQLException sqle) {
+                    Toast.makeText(getApplicationContext(), "초기화 실패", Toast.LENGTH_SHORT).show();
+                    sqlDB.close();
+                    return;
+                }
                 myHelper.onUpgrade(sqlDB, 1, 2);
                 sqlDB.close();
+                btnSelect.callOnClick();
             }
         });
 
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqlDB = myHelper.getWritableDatabase();
-                sqlDB.execSQL("INSERT INTO groupTBL VALUES ( '" + edtName.getText().toString() + "' , " + edtNumber.getText().toString() + ");");
+                try {
+                    sqlDB = myHelper.getWritableDatabase();
+                    sqlDB.execSQL("INSERT INTO groupTBL VALUES ( '" + edtName.getText().toString() + "' , " + edtNumber.getText().toString() + " );");
+                } catch (SQLException sqle) {
+                    Toast.makeText(getApplicationContext(), "입력 실패", Toast.LENGTH_SHORT).show();
+                    edtName.setText("");
+                    edtNumber.setText("");
+                    sqlDB.close();
+                    return;
+                }
                 sqlDB.close();
                 btnSelect.callOnClick();
                 Toast.makeText(getApplicationContext(), "입력됨", Toast.LENGTH_SHORT).show();
@@ -58,9 +74,18 @@ public class MainActivity extends AppCompatActivity {
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqlDB = myHelper.getWritableDatabase();
-                Cursor cursor;
-                cursor = sqlDB.rawQuery("SELECT * FROM groupTBL;", null);
+                Cursor cursor = null;
+                try {
+                    sqlDB = myHelper.getWritableDatabase();
+                    cursor = sqlDB.rawQuery("SELECT * FROM groupTBL;", null);
+                } catch (SQLException sqle) {
+                    Toast.makeText(getApplicationContext(), "조회 실패", Toast.LENGTH_SHORT).show();
+                    edtName.setText("");
+                    edtNumber.setText("");
+                    cursor.close();
+                    sqlDB.close();
+                    return;
+                }
 
                 String strNames = "그룹 이름" + "\r\n" + "--------" + "\r\n";
                 String strNumbers = "인원" + "\r\n" + "--------" + "\r\n";
@@ -81,8 +106,16 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqlDB = myHelper.getWritableDatabase();
-                sqlDB.execSQL("UPDATE groupTBL SET gNumber = "+ edtNumber.getText().toString() + "WHERE gName =  '" + edtName.getText().toString() + "';");
+                try {
+                    sqlDB = myHelper.getWritableDatabase();
+                    sqlDB.execSQL("UPDATE groupTBL SET gNumber = " + edtNumber.getText().toString() + " WHERE gName = '" + edtName.getText().toString() + "';");
+                } catch (SQLException sqle) {
+                    Toast.makeText(getApplicationContext(), "수정 실패", Toast.LENGTH_SHORT).show();
+                    edtName.setText("");
+                    edtNumber.setText("");
+                    sqlDB.close();
+                    return;
+                }
                 sqlDB.close();
                 btnSelect.callOnClick();
                 Toast.makeText(getApplicationContext(), "수정됨", Toast.LENGTH_SHORT).show();
@@ -92,8 +125,16 @@ public class MainActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sqlDB = myHelper.getWritableDatabase();
-                sqlDB.execSQL("DELETE FROM groupTBL WHERE gName = '" + edtName.getText().toString() + "';");
+                try {
+                    sqlDB = myHelper.getWritableDatabase();
+                    sqlDB.execSQL("DELETE FROM groupTBL WHERE gName = '" + edtName.getText().toString() + "';");
+                } catch (SQLException sqle) {
+                Toast.makeText(getApplicationContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
+                edtName.setText("");
+                edtNumber.setText("");
+                sqlDB.close();
+                return;
+                }
                 sqlDB.close();
                 btnSelect.callOnClick();
                 Toast.makeText(getApplicationContext(), "삭제됨", Toast.LENGTH_SHORT).show();
