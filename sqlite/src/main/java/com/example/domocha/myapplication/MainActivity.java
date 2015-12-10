@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
                     sqlDB = myHelper.getWritableDatabase();
                     sqlDB.execSQL("DELETE FROM groupTBL WHERE gName = '" + edtName.getText().toString() + "';");
                 } catch (SQLException sqle) {
-                Toast.makeText(getApplicationContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
-                edtName.setText("");
-                edtNumber.setText("");
-                sqlDB.close();
-                return;
+                    Toast.makeText(getApplicationContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
+                    edtName.setText("");
+                    edtNumber.setText("");
+                    sqlDB.close();
+                    return;
                 }
                 sqlDB.close();
                 btnSelect.callOnClick();
